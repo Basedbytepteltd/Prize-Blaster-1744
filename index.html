@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#10B981" />
+    <!-- CSP: Allow all sources for ads and scripts to function -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+    <title>Prize Blaster - Play Games, Earn Money</title>
+    
+    <!-- GameMonetize Configuration -->
+    <script type="text/javascript">
+      window.SDK_OPTIONS = {
+        gameId: "jnk3u9mh5zyedwr0pb3o59bttvv05e4d", 
+        onEvent: function (a) {
+          switch (a.name) {
+            case "SDK_GAME_PAUSE":
+              // 1. Pause game logic internally if needed
+              if (window.gameContext && window.gameContext.pause) window.gameContext.pause();
+              // 2. Dispatch event for React to handle
+              window.dispatchEvent(new Event('gamemonetize_game_pause'));
+              console.log("SDK: Game Paused");
+              break;
+            case "SDK_GAME_START":
+              // 1. Resume game logic
+              if (window.gameContext && window.gameContext.resume) window.gameContext.resume();
+              // 2. Dispatch event for React to handle (e.g., reward granting)
+              window.dispatchEvent(new Event('gamemonetize_game_start'));
+              console.log("SDK: Game Started/Resumed");
+              break;
+            case "SDK_READY":
+              console.log("SDK: Ready");
+              window.dispatchEvent(new Event('gamemonetize_sdk_ready'));
+              break;
+            case "SDK_ERROR":
+              console.log("SDK: Error");
+              window.dispatchEvent(new Event('gamemonetize_sdk_error'));
+              break;
+          }
+        }
+      };
+      (function (a, b, c) {
+        var d = a.getElementsByTagName(b)[0];
+        a.getElementById(c) || (a = a.createElement(b), a.id = c, 
+        a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d))
+      })(document, "script", "gamemonetize-sdk"); 
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
